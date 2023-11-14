@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         itemListView = binding.mainItemListview;
         itemInfoArrayAdapter = new MainItemListView(MainActivity.this, R.id.main_item_listview, itemInfoList);
         itemListView.setAdapter(itemInfoArrayAdapter);
-
         initView();
     }
 

@@ -13,6 +13,7 @@ import java.util.List;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.ConstructorUtils;
 import lin.util.ReflectUtils.FieIdUtils;
+import lin.util.ReflectUtils.MethodTool;
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
@@ -28,6 +29,7 @@ import lin.xposed.hook.util.qq.ToastTool;
 @HookItem("辅助功能/表情/在新的QQ中依然可以下载表情")
 public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethodFinder {
 
+    private Object dialog;
     private final String privateTAG = "保存本地";
     Class<?> emojiInfoClass;
     private String emojiUrl;
@@ -43,6 +45,7 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
 
         Class<?> AIOEmotionFragmentClass = ClassUtils.getClass("com.tencent.mobileqq.emotionintegrate.AIOEmotionFragment");
         Method method = AIOEmotionFragmentClass.getMethod("onCreate", Bundle.class);
+        //获取MD5
         hookAfter(method,param -> {
             Object emojiInfo = null;
             for (Field field : param.thisObject.getClass().getDeclaredFields()) {
@@ -67,6 +70,7 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
             ActivityTools.injectResourcesToContext(activity);
         });
 
+        //注入点击事件 因为没有找到别的注入点
         Class<?> ActionSheetItemAdapterClass = classLoader.loadClass("com.tencent.mobileqq.widget.share.ShareActionSheetV2$ActionSheetItemAdapter");
         hookAfter(ActionSheetItemAdapterClass.getMethod("getView",int.class, android.view.View.class, android.view.ViewGroup.class),param -> {
             ViewGroup resultView = (ViewGroup) param.getResult();
@@ -82,8 +86,11 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
                                     try {
                                         HttpUtils.fileDownload(emojiUrl, PathTool.getStorageDirectory() + "/Pictures/QQ/" + emojiMD5 +".png");
                                         ToastTool.show("保存成功~");
+                                        //关闭弹窗
+                                        MethodTool.find(dialog.getClass()).name("dismiss").call(dialog);
                                     } catch (Exception e) {
                                         ToastTool.show("下载失败 原因 : " + LogUtils.getStackTrace(e));
+                                        LogUtils.addError(e);
                                     }
                                 }).start();
                             }
@@ -92,6 +99,7 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
                 }
             }
         });
+        //插入item
         Class<?> ShareActionSheetV2Class = classLoader.loadClass("com.tencent.mobileqq.widget.share.ShareActionSheetV2");
         Method m3 = ShareActionSheetV2Class.getMethod("setActionSheetItems", List[].class);
         hookBefore(m3,param -> {
@@ -99,17 +107,20 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
             for (List list : params) {
                 for (Object item : list) {
                     String label = FieIdUtils.getField(item, "label", String.class);
+
                     if (label != null && label.equals("添加到表情")) {
                         Object mItem = ConstructorUtils.newInstance(item.getClass());
                         FieIdUtils.setField(mItem, "icon", R.drawable.download_icon);
                         FieIdUtils.setField(mItem, "reportID", "QStory_DownLoadEmoji");
                         FieIdUtils.setField(mItem, "label", privateTAG);
                         list.add(0, mItem);
+                        this.dialog = param.thisObject;
                         break;
                     }
                 }
             }
         });
+
     }
 
     @Override

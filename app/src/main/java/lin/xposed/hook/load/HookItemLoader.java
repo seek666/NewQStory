@@ -58,7 +58,7 @@ public class HookItemLoader {
 
                 HookInstance.put(hookItemClass, baseHookItem);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

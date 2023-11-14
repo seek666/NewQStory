@@ -32,6 +32,8 @@ public class LinearSpacingItemDecoration extends RecyclerView.ItemDecoration {
         int leftAndRightMargins = ScreenParamUtils.dpToPx(parent.getContext(), 16);
         outRect.left = leftAndRightMargins;//左边距
         outRect.right = leftAndRightMargins;//右边距
+        if (position == MainAdapter.getDataList().size() - 1)
+            outRect.bottom = ScreenParamUtils.dpToPx(parent.getContext(), 16);
     }
 
 }
