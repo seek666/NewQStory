@@ -4,7 +4,6 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -29,8 +28,7 @@ public class ProtectionModulePathFile extends BaseHookItem {
             ms.setAccessible(true);
             if (ms.getParameterTypes().length >= 6 && ms.getParameterTypes()[0] == File.class) {
 
-                AtomicReference<XC_MethodHook.Unhook> unhook = new AtomicReference<>();
-                unhook.set(XposedBridge.hookMethod(ms, new XC_MethodHook() {
+                XposedBridge.hookMethod(ms, new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
@@ -42,18 +40,12 @@ public class ProtectionModulePathFile extends BaseHookItem {
                                 ArrayList list = (ArrayList) field.get(param.thisObject);
                                 list.removeIf(o -> {
                                     String path = String.valueOf(o);
-                                    if (path.contains("QStory")) {
-                                        Unhook unhook_ = unhook.getAndSet(null);
-                                        if (unhook_ != null) unhook_.unhook();
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
+                                    return path.contains("QStory");
                                 });
                             }
                         }
                     }
-                }));
+                });
 
             }
             /*if (ms.getReturnType() == ArrayList.class) {
@@ -70,7 +62,6 @@ public class ProtectionModulePathFile extends BaseHookItem {
                 });
             }*/
         }
-
 
 
     }

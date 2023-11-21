@@ -95,7 +95,6 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
                                         String suffix = BitmapUtils.getImageType(emojiUrl);
                                         //下载
                                         String downloadPath = PathTool.getStorageDirectory() + "/Pictures/QQ/" + emojiMD5 + suffix;
-                                        ToastTool.show(downloadPath);
                                         File file = new File(downloadPath);
                                         HttpUtils.fileDownload(emojiUrl, downloadPath);
                                         //通知相册更新
