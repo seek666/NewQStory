@@ -22,6 +22,25 @@ import java.util.Map;
 
 public class HttpUtils {
 
+    public static URLConnection openUrl(String urlStr) {
+        try {
+            // 统一资源
+            URL url = new URL(urlStr);
+            // 连接类的父类，抽象类
+            URLConnection urlConnection = url.openConnection();
+            // http的连接类
+            HttpURLConnection conn = (HttpURLConnection) urlConnection;
+            // 设定请求的方法，默认是GET
+            conn.setRequestMethod("GET");
+            // 设置字符编码
+            conn.setRequestProperty("Charset", "UTF-8");
+            // 打开到此 URL 引用的资源的通信链接（如果尚未建立这样的连接）。
+            conn.connect();
+            return conn;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static File fileDownload(String urlStr, String downloadDir) {
         File file = new File(downloadDir);

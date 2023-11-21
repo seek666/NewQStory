@@ -1,11 +1,14 @@
 package lin.xposed.hook.item;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -17,6 +20,7 @@ import lin.util.ReflectUtils.MethodTool;
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
+import lin.xposed.common.utils.BitmapUtils;
 import lin.xposed.common.utils.HttpUtils;
 import lin.xposed.hook.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
@@ -37,7 +41,7 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
     private String emojiMD5;
     @Override
     public String getTips() {
-        return "在版本大于等于8.9.80时QQ关闭了表情保存 此功能可以继续下载表情";
+        return "在版本大于等于8.9.80时QQ关闭了表情保存 此功能可以继续下载表情 保存到的路径为 " + PathTool.getStorageDirectory() + "/Pictures/QQ/";
     }
 
     @Override
@@ -84,10 +88,22 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
                             public void onClick(View view) {
                                 new Thread(()->{
                                     try {
-                                        HttpUtils.fileDownload(emojiUrl, PathTool.getStorageDirectory() + "/Pictures/QQ/" + emojiMD5 +".png");
-                                        ToastTool.show("保存成功~");
+                                        Activity activity = ActivityTools.getActivity();
                                         //关闭弹窗
                                         MethodTool.find(dialog.getClass()).name("dismiss").call(dialog);
+                                        //获取后缀
+                                        String suffix = BitmapUtils.getImageType(emojiUrl);
+                                        //下载
+                                        String downloadPath = PathTool.getStorageDirectory() + "/Pictures/QQ/" + emojiMD5 + suffix;
+                                        ToastTool.show(downloadPath);
+                                        File file = new File(downloadPath);
+                                        HttpUtils.fileDownload(emojiUrl, downloadPath);
+                                        //通知相册更新
+                                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        Uri uri = Uri.fromFile(file);
+                                        intent.setData(uri);
+                                        activity.sendBroadcast(intent);
+                                        ToastTool.show("保存成功~");
                                     } catch (Exception e) {
                                         ToastTool.show("下载失败 原因 : " + LogUtils.getStackTrace(e));
                                         LogUtils.addError(e);

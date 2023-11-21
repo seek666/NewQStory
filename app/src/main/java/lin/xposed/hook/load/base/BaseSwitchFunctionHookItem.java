@@ -55,6 +55,13 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         return null;
     }
 
+
+    /**
+     * 对方法进行 Hook 调用后
+     *
+     * @param method       targetMethod
+     * @param hookBehavior hook
+     */
     protected final void hookAfter(Method method, HookBehavior hookBehavior) {
         XposedBridge.hookMethod(method, new XC_MethodHook() {
             @Override
@@ -70,6 +77,12 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         });
     }
 
+    /**
+     * 对方法 Hook 调用前
+     *
+     * @param method       targetMethod
+     * @param hookBehavior hook
+     */
     protected final void hookBefore(Method method, HookBehavior hookBehavior) {
         XposedBridge.hookMethod(method, new XC_MethodHook() {
             @Override
@@ -85,6 +98,9 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         });
     }
 
+    /**
+     * @param priority 当有多个hook作用于同一个方法 这个参数决定 哪个hook先执行 越高执行的优先级越高
+     */
     protected final void hookBefore(Method method, HookBehavior hookBehavior, int priority) {
         XposedBridge.hookMethod(method, new XC_MethodHook(priority) {
             @Override
@@ -115,6 +131,12 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         });
     }
 
+    /**
+     * 等同于 new XC_MethodHook() {
+     * protected void beforeHookedMethod(MethodHookParam param) {}
+     * protected void afterHookedMethod(MethodHookParam param) {}
+     * }
+     */
     protected interface HookBehavior {
         void execute(XC_MethodHook.MethodHookParam param) throws Throwable;
     }
