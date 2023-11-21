@@ -15,6 +15,14 @@
     - 1.LSPosed
     - 2.LSPatch 本地模式
     - 3.太极-无极
+ ---
+* **更新频率**
+
+    -  随缘更新
+    - [Releases](https://github.com/Suzhelan/NewQStory/releases) 大约在版本迭代5-10个内更新
+    - [Telegram](https://t.me/WhenFlowersAreInBloom) 在构建测试结束后会更新
+
+---  
 
 ~~由于开发人员的急缺暂时无法测试其他框架是否可用~~  
 经过大多数用户的测试目前在所有的框架中已经完成了适配  
