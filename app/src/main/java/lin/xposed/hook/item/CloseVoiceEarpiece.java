@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 
 import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.HookItem;
 import lin.xposed.hook.QQVersion;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("辅助功能/聊天/禁用听语音时听筒来回自动切换")

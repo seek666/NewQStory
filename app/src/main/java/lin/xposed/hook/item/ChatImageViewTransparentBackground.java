@@ -10,8 +10,8 @@ import java.util.List;
 
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.common.utils.ActivityTools;
-import lin.xposed.hook.HookItem;
 import lin.xposed.hook.QQVersion;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("辅助功能/聊天/查看图片时背景透明模糊")

@@ -17,7 +17,7 @@ import lin.xposed.BuildConfig;
 import lin.xposed.common.config.SimpleConfig;
 import lin.xposed.common.utils.FileUtils;
 import lin.xposed.hook.HookEnv;
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.util.LogUtils;
@@ -42,21 +42,16 @@ public class HookItemLoader {
             ClassLoader classLoader = HookItemLoader.class.getClassLoader();
             if (classLoader == null)
                 throw new ReflectException("HookItemLoader.class.getClassLoader() == null");
-            //反射获取由AnnotationProcessor根据注解动态生成的java文件 不会直接出现在源码 只会在编译期自动参与打包
             Class<?> hookItemNameClass = classLoader.loadClass(AnnotationClassNameTools.getClassName());
-            Class<?>[] allHookItemClass = FieIdUtils.getStaticFieId(hookItemNameClass, "allHookItemClass", Class[].class);
-            for (Class<?> hookItemClass : allHookItemClass) {
-                //new出hookitem
-                BaseHookItem baseHookItem = (BaseHookItem) hookItemClass.newInstance();
-
+            BaseHookItem[] baseHookItemList = FieIdUtils.getStaticFieId(hookItemNameClass, "allHookItemClass", BaseHookItem[].class);
+            for (BaseHookItem baseHookItem : baseHookItemList) {
                 //获取注解和信息并初始化 GetAnnotationInfo and initItemPath
-                HookItem annotation = hookItemClass.getAnnotation(HookItem.class);
-                assert annotation != null;
+                HookItem annotation = baseHookItem.getClass().getAnnotation(HookItem.class);
                 String itemPath = annotation.value();
                 baseHookItem.initItemPath(itemPath);
                 baseHookItem.setHasUiPath(annotation.hasPath());
 
-                HookInstance.put(hookItemClass, baseHookItem);
+                HookInstance.put(baseHookItem.getClass(), baseHookItem);
             }
         } catch (Exception ignored) {
         }

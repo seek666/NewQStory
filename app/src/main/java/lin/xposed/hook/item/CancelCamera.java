@@ -6,10 +6,9 @@ import android.widget.LinearLayout;
 
 import java.lang.reflect.Method;
 
-import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.HookItem;
 import lin.xposed.hook.QQVersion;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("净化/聊天/精简聊天界面相机按钮")
@@ -30,16 +29,13 @@ public class CancelCamera extends BaseSwitchFunctionHookItem {
             if (hookMethod == null) {
                 throw new RuntimeException("No method found");
             }
-            hookAfter(hookMethod, new HookBehavior() {
-                @Override
-                public void execute(XC_MethodHook.MethodHookParam param) throws Throwable {
-                    LinearLayout layout = (LinearLayout) param.thisObject;
-                    for (int i = 0; i < layout.getChildCount(); i++) {
-                        View PaneIconImage = layout.getChildAt(i);
-                        if (PaneIconImage.getContentDescription().equals("拍照")) {
-                            layout.removeViewAt(i);
-                            break;
-                        }
+            hookAfter(hookMethod, param -> {
+                LinearLayout layout = (LinearLayout) param.thisObject;
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View PaneIconImage = layout.getChildAt(i);
+                    if (PaneIconImage.getContentDescription().equals("拍照")) {
+                        layout.removeViewAt(i);
+                        break;
                     }
                 }
             });
@@ -54,13 +50,9 @@ public class CancelCamera extends BaseSwitchFunctionHookItem {
                     @SuppressLint("ResourceType")
                     View v = layout.getChildAt(2);
                     if (v == null) return;
-                    layout.post(() -> {
-                        layout.removeView(v);
-                    });
+                    layout.post(() -> layout.removeView(v));
                 } else if (layout.getChildCount() >= 2) {
-                    layout.post(() -> {
-                        layout.removeViewAt(1);
-                    });
+                    layout.post(() -> layout.removeViewAt(1));
                 }
             });
         }

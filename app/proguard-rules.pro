@@ -23,7 +23,7 @@
 -keep class lin.xposed.hook.** {*;}
 -keep class lin.xposed.view.main.** {*;}
 -keep class * extends android.app.Activity {*;}
-#-keep @lin.xposed.hook.HookItem class * {*;}
+#-keep @lin.xposed.hook.annotation.HookItem class * {*;}
 -keep class lin.xposed.R {*;}
 -keep class lin.xposed.LinStringForImpl {*;}
 

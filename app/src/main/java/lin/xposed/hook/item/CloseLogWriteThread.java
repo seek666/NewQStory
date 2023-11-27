@@ -6,8 +6,8 @@ import java.util.List;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.HookItem;
 
 @HookItem("净化/实验功能/禁用日志写入的线程")
 public class CloseLogWriteThread extends BaseSwitchFunctionHookItem {

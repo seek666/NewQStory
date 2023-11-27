@@ -84,6 +84,7 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
      * @param hookBehavior hook
      */
     protected final void hookBefore(Method method, HookBehavior hookBehavior) {
+
         XposedBridge.hookMethod(method, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {

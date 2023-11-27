@@ -10,16 +10,26 @@ import java.lang.reflect.Method;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
+import lin.xposed.hook.HookEnv;
+import lin.xposed.hook.QQVersion;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.HookItem;
 
-@HookItem("净化/侧滑栏/侧滑栏右上角上角返回")
+@HookItem("净化/侧滑栏/侧滑栏右上角返回")
 public class QQSettingMeViewBack extends BaseSwitchFunctionHookItem {
     @Override
     public void loadHook(ClassLoader loader) throws Exception {
-        Class<?> settingView = loader.loadClass("com.tencent.mobileqq.activity.QQSettingMe");
-        Class<?> resultClass = loader.loadClass("com.tencent.mobileqq.activity.BaseQQSettingMeView");
-        Loop : for (Class<?> currentClass = settingView; currentClass != null; currentClass = currentClass.getSuperclass()) {
+        Class<?> settingView;
+        Class<?> resultClass;
+        if (HookEnv.getVersionCode() >= QQVersion.QQ_8_9_90) {
+            settingView = loader.loadClass("com.tencent.mobileqq.QQSettingMe");
+            resultClass = loader.loadClass("com.tencent.mobileqq.BaseQQSettingMeView");
+        } else {
+            settingView = loader.loadClass("com.tencent.mobileqq.activity.QQSettingMe");
+            resultClass = loader.loadClass("com.tencent.mobileqq.activity.BaseQQSettingMeView");
+        }
+        Loop:
+        for (Class<?> currentClass = settingView; currentClass != null; currentClass = currentClass.getSuperclass()) {
             for (Method method : currentClass.getDeclaredMethods()) {
                 method.setAccessible(true);
                 if (method.getReturnType() == resultClass) {

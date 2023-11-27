@@ -10,8 +10,8 @@ import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.FieIdUtils;
 import lin.util.ReflectUtils.MethodUtils;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.HookItem;
 
 @HookItem("净化/资料卡/陌生人资料卡你们的关系标识")
 public class OffRelationshipIdentification extends BaseSwitchFunctionHookItem {

@@ -22,7 +22,7 @@ import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.BitmapUtils;
 import lin.xposed.common.utils.HttpUtils;
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.load.methodfind.IMethodFinder;
 import lin.xposed.hook.load.methodfind.MethodFinder;

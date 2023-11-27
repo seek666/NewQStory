@@ -1,4 +1,4 @@
-package lin.xposed.hook;
+package lin.xposed.hook.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

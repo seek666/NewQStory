@@ -141,8 +141,6 @@ public class DexFinder {
                         String className = dexParser.dexStringIdsList[methodParams[i].descriptor_idx].getString(dexParser);
                         params[i] = DexTypeUtils.findClass(className);
                     }
-                    File file = new File("/storage/emulated/0/Android/data/com.tencent.mobileqq/files/QStory/Log/ErrorLog/Test.txt");
-                    FileUtils.writeTextToFile(file.getAbsolutePath(),methodName+":"+clz.getName()+"\n",true);
                     Method method = clz.getDeclaredMethod(methodName, params);
                     result.add(method);
                     continue MethodFor;

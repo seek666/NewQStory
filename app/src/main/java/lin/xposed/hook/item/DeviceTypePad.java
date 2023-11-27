@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import lin.util.ReflectUtils.ClassUtils;
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.load.methodfind.IMethodFinder;
 import lin.xposed.hook.load.methodfind.MethodFinder;

@@ -28,6 +28,7 @@ import lin.util.ReflectUtils.FieIdUtils;
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.main.MainSettingActivity;
 import lin.xposed.hook.util.LogUtils;

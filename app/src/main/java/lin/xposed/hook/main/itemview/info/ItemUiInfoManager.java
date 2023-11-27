@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.HookItemLoader;
 import lin.xposed.hook.load.base.BaseHookItem;
-import lin.xposed.hook.HookItem;
 
 /*
  * 别看了 我也看不懂(写完就忘)

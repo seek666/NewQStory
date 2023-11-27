@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import lin.util.ReflectUtils.ClassUtils;
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseHookItem;
 
 @HookItem("保护模块数据不被qq清理")

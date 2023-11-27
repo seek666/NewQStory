@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.hook.HookEnv;
-import lin.xposed.hook.HookItem;
 import lin.xposed.hook.QQVersion;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("净化/侧滑栏/启用旧版侧滑栏")

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class MethodTool {
     private static final Map<String, Method> METHOD_CACHE = new HashMap<>();
-    private TargetMethodInfo targetMethod;
+    private TargetMethodInfo targetMethodInfo;
 
     private MethodTool() {
 
@@ -15,15 +15,15 @@ public class MethodTool {
 
     public static MethodTool find(String findClassName) {
         MethodTool methodTool = new MethodTool();
-        methodTool.targetMethod = new TargetMethodInfo();
-        methodTool.targetMethod.findClassName = findClassName;
+        methodTool.targetMethodInfo = new TargetMethodInfo();
+        methodTool.targetMethodInfo.findClassName = findClassName;
         return methodTool;
     }
 
     public static MethodTool find(Class<?> findClass) {
         MethodTool methodTool = new MethodTool();
-        methodTool.targetMethod = new TargetMethodInfo();
-        methodTool.targetMethod.findClass = findClass;
+        methodTool.targetMethodInfo = new TargetMethodInfo();
+        methodTool.targetMethodInfo.findClass = findClass;
         return methodTool;
     }
 
@@ -35,17 +35,9 @@ public class MethodTool {
     private static StringBuilder buildMethodSignature(String findClass, String methodName, Class<?>[] paramTypes, Class<?> returnType) {
         StringBuilder sb = new StringBuilder();
         sb.append(findClass).append(".").append(methodName).append("(");
-
         for (Class<?> type : paramTypes) {
             sb.append(type.getName()).append(",");
         }
-
-        /*char splitChar = '\0';
-        for (Class<?> type : paramTypes) {
-            sb.append(splitChar);
-            splitChar = ',';
-            sb.append(type.getName());
-        }*/
         if (sb.charAt(sb.length() - 1) == ',') sb.delete(sb.length() - 1, sb.length());
         sb.append(")");
         if (returnType != null) sb.append(returnType.getName());
@@ -53,17 +45,17 @@ public class MethodTool {
     }
 
     public MethodTool name(String name) {
-        this.targetMethod.methodName = name;
+        this.targetMethodInfo.methodName = name;
         return this;
     }
 
     public MethodTool returnType(Class<?> returnType) {
-        this.targetMethod.returnType = returnType;
+        this.targetMethodInfo.returnType = returnType;
         return this;
     }
 
     public MethodTool params(Class<?>... methodParamsType) {
-        this.targetMethod.methodParams = methodParamsType;
+        this.targetMethodInfo.methodParams = methodParamsType;
         return this;
     }
 
@@ -77,18 +69,21 @@ public class MethodTool {
     }
 
     public Method get() {
-        TargetMethodInfo target = this.targetMethod;
+        TargetMethodInfo target = this.targetMethodInfo;
 
         //构造方法签名
-        String signature = buildMethodSignature(target.findClassName, targetMethod.methodName, target.methodParams, target.returnType).toString();
+        String signature = buildMethodSignature(target.findClassName, targetMethodInfo.methodName, target.methodParams, target.returnType).toString();
         if (METHOD_CACHE.containsKey(signature)) {
             return METHOD_CACHE.get(signature);
         }
 
-        for (Class<?> currentFindClass = target.findClass == null ? ClassUtils.getClass(target.findClassName) : target.findClass; currentFindClass != Object.class; currentFindClass = currentFindClass.getSuperclass()) {
+        for (Class<?> currentFindClass = target.findClass == null ? ClassUtils.getClass(target.findClassName) : target.findClass;
+             currentFindClass != Object.class;
+             currentFindClass = currentFindClass.getSuperclass()) {
             MethodFor:
             for (Method method : currentFindClass.getDeclaredMethods()) {
-                if ((method.getName().equals(target.methodName) || target.methodName == null) && (method.getReturnType().equals(target.returnType) || target.returnType == null)) {
+                if ((method.getName().equals(target.methodName) || target.methodName == null) &&
+                        (method.getReturnType().equals(target.returnType) || target.returnType == null)) {
                     Class<?>[] methodParams = method.getParameterTypes();
                     if (methodParams.length == target.methodParams.length) {
                         for (int i = 0; i < methodParams.length; i++) {

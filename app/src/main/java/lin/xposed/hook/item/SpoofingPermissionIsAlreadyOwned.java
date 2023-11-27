@@ -4,7 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("辅助功能/实验功能/伪装应用权限已持有")

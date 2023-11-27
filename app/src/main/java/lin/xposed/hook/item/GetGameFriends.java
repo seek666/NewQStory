@@ -17,7 +17,7 @@ import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.HookItem;
+import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("辅助功能/实验功能/获取游戏好友QQ")
