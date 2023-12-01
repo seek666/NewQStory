@@ -17,7 +17,6 @@ import de.robv.android.xposed.XposedBridge;
 import lin.app.main.ModuleBuildInfo;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.widget.dialog.SimpleLoadingDialog;
-import lin.xposed.BuildConfig;
 import lin.xposed.common.config.SimpleConfig;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.FileUtils;
@@ -108,7 +107,7 @@ public class MethodFindProcessor {
                 dexFinder.close();
 
                 isMethodFindPeriod.set(false);
-                config.put("moduleVersionAndHostAppVersion", ModuleBuildInfo.moduleVersionName + ":" + HookEnv.getVersionName() + ":" + BuildConfig.BUILD_TYPE);
+                config.put("moduleVersionAndHostAppVersion", ModuleBuildInfo.moduleVersionName + ":" + HookEnv.getVersionName());
                 config.put("time", LogUtils.getTime());
                 sendMsgToDialog("END");
             } catch (Exception e) {

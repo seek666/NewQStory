@@ -13,7 +13,6 @@ import lin.app.main.ModuleBuildInfo;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.FieIdUtils;
 import lin.util.ReflectUtils.ReflectException;
-import lin.xposed.BuildConfig;
 import lin.xposed.common.config.SimpleConfig;
 import lin.xposed.common.utils.FileUtils;
 import lin.xposed.hook.HookEnv;
@@ -86,7 +85,7 @@ public class HookItemLoader {
             return methodDataUpdate.get();
         }
         SimpleConfig config = new SimpleConfig("BaseConfig");
-        String moduleVersionAndHostAppVersion = ModuleBuildInfo.moduleVersionName + ":" + HookEnv.getVersionName() + ":" + BuildConfig.BUILD_TYPE;
+        String moduleVersionAndHostAppVersion = ModuleBuildInfo.moduleVersionName + ":" + HookEnv.getVersionName();
         String oldData = config.get("moduleVersionAndHostAppVersion");
         boolean dataIsOutOfDate = moduleVersionAndHostAppVersion.equals(oldData);
         methodDataUpdate.set(dataIsOutOfDate);
