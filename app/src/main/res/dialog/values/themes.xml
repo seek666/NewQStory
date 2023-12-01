@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/露草色</item>
+        <item name="colorControlActivated">@color/露草色</item>
+    </style>
+
+    <style name="Theme.MyAppTheme" parent="Theme.Material3.Light">
+        <item name="colorControlNormal">@color/露草色</item>
+        <item name="colorControlActivated">@color/露草色</item>
+        <item name="colorPrimary">@color/露草色</item>
+        <item name="colorPrimaryVariant">@color/露草色</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+</resources>

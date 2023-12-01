@@ -16,6 +16,7 @@ public class CancelCamera extends BaseSwitchFunctionHookItem {
 
     @Override
     public void loadHook(ClassLoader loader) throws Exception {
+
         if (QQVersion.isQQNT()) {
             Class<?> clz = loader.loadClass("com.tencent.qqnt.aio.shortcutbar.PanelIconLinearLayout");
             Method hookMethod = null;

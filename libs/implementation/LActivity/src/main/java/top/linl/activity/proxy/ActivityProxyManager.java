@@ -23,8 +23,8 @@ import top.linl.activity.util.ClassLoaderTool;
 
 @SuppressLint({"DiscouragedPrivateApi", "PrivateApi"})
 public class ActivityProxyManager {
-
     private static final AtomicBoolean Initialized = new AtomicBoolean();
+
     public static String HostActivityClassName;
     public static String ACTIVITY_PROXY_INTENT = "lin_proxy_intent";
 
@@ -37,6 +37,63 @@ public class ActivityProxyManager {
         }
     }
 
+    /**
+     * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
+     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
+     *
+     * @param hostContext   宿主的上下文
+     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口{@code IXposedHookZygoteInit的void initZygote(StartupParam startupParam)}
+     *                      获取到{@code String startupParam.modulePath}
+     * @param ResId 任意Res资源内的id 用于判断res资源是否已经注入到此活动 没有注入自动注入
+     */
+    public static void initActivityProxyManager(Context hostContext,
+                                                String ModuleApkPath, int ResId) {
+        if (ResId != 0) ActivityProxyEnvInfo.resID = ResId;
+
+        ClassLoaderTool.setHostClassLoader(hostContext.getClassLoader());
+        ClassLoaderTool.setModuleLoader(ActivityProxyManager.class.getClassLoader());
+        ActivityProxyEnvInfo.ModuleApkPath = ModuleApkPath;
+        ActivityProxyEnvInfo.HostContext = hostContext;
+
+        HostActivityClassName = ActivityUtils.getAllActivity(hostContext)[0].name;
+        if (Initialized.getAndSet(true)) return;
+        try {
+            Class<?> cActivityThread = Class.forName("android.app.ActivityThread");
+            // 获取sCurrentActivityThread对象
+            Field fCurrentActivityThread = cActivityThread.getDeclaredField("sCurrentActivityThread");
+            fCurrentActivityThread.setAccessible(true);
+            Object currentActivityThread = fCurrentActivityThread.get(null);
+
+            replaceInstrumentation(currentActivityThread);
+            replaceHandler(currentActivityThread);
+            replaceIActivityManager();
+            try {
+                replaceIActivityTaskManager();
+            } catch (Exception ignored) {
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
+     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
+     * 无需担心res无法或重复注入 本库会自动获取插件apk的dex并释放获取R.id类来判断是否重复注入 没有注入则自动注入
+     * <p>
+     * 如果抛出 java.lang.RuntimeException : LActivity_DEXHotLoad getModuleRandomID Error
+     * 这种情况很可能是插件apk的dex热释放和加载或开启混淆后导致packageName.R类被混淆导致的获取id异常
+     * 如果发生了请使用{@link #initActivityProxyManager(Context, String, int)} 方法
+     *
+     * @param hostContext   宿主的上下文
+     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口IXposedHookZygoteInit的void initZygote(StartupParam startupParam)
+     *                      获取到String startupParam.modulePath
+     */
+    public static void initActivityProxyManager(Context hostContext,
+                                                String ModuleApkPath) {
+        ActivityProxyEnvInfo.resID = getModuleRandomID(hostContext, ModuleApkPath);
+        initActivityProxyManager(hostContext, ModuleApkPath, 0);
+    }
 
     /**
      * 获取插件的随机id
@@ -78,63 +135,6 @@ public class ActivityProxyManager {
             throw new RuntimeException(e);
         }
         throw new RuntimeException("LActivity_DEXHotLoad getModuleRandomID Error");
-    }
-
-    /**
-     * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
-     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
-     *
-     * @param hostContext   宿主的上下文
-     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口{@code IXposedHookZygoteInit的void initZygote(StartupParam startupParam)}
-     *                      获取到{@code String startupParam.modulePath}
-     * @param ResId 任意Res资源内的id 用于判断res资源是否已经注入到此活动 没有注入自动注入
-     */
-    public static void initActivityProxyManager(Context hostContext,
-                                                String ModuleApkPath, int ResId) {
-        if (ResId != 0) ActivityProxyEnvInfo.resID = ResId;
-
-        ClassLoaderTool.setHostClassLoader(hostContext.getClassLoader());
-        ClassLoaderTool.setModuleLoader(ActivityProxyManager.class.getClassLoader());
-        ActivityProxyEnvInfo.ModuleApkPath = ModuleApkPath;
-        ActivityProxyEnvInfo.HostContext = hostContext;
-
-        HostActivityClassName = ActivityUtils.getAllActivity(hostContext)[0].name;
-        if (Initialized.getAndSet(true)) return;
-        try {
-            Class<?> cActivityThread = Class.forName("android.app.ActivityThread");
-            // 获取sCurrentActivityThread对象
-            Field fCurrentActivityThread = cActivityThread.getDeclaredField("sCurrentActivityThread");
-            fCurrentActivityThread.setAccessible(true);
-            Object currentActivityThread = fCurrentActivityThread.get(null);
-
-            replaceInstrumentation(currentActivityThread);
-            replaceHandler(currentActivityThread);
-            replaceIActivityManager();
-            try {
-                replaceIActivityTaskManager();
-            } catch (Exception ignored) {
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
-     * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
-     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
-     * 无需担心res无法或重复注入 本库会自动获取插件apk的dex并释放获取R.id类来判断是否重复注入 没有注入则自动注入
-     * <p>
-     * 如果抛出 java.lang.RuntimeException : LActivity_DEXHotLoad getModuleRandomID Error
-     * 这种情况很可能是插件apk的dex热释放和加载或开启混淆后导致packageName.R类被混淆导致的获取id异常
-     * 如果发生了请使用{@link #initActivityProxyManager(Context, String, int)} 方法
-     *
-     * @param hostContext   宿主的上下文
-     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口IXposedHookZygoteInit的void initZygote(StartupParam startupParam)
-     *                      获取到String startupParam.modulePath
-     */
-    public static void initActivityProxyManager(Context hostContext,
-                                                String ModuleApkPath) {
-        ActivityProxyEnvInfo.resID = getModuleRandomID(hostContext, ModuleApkPath);
-        initActivityProxyManager(hostContext, ModuleApkPath, 0);
     }
 
     private static void replaceInstrumentation(Object activityThread) throws Exception {

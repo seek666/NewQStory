@@ -40,6 +40,11 @@ public class SimpleConfig {
     public void remove(String key) {
         dataReader.remove(key);
     }
+
+    public void removeAll() {
+        this.dataReader = new JSONObject();
+    }
+
     public boolean submit() {
         try {
             FileUtils.writeTextToFile(getPath(), dataReader.toString(), false);

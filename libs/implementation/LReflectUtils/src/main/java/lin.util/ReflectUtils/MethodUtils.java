@@ -2,12 +2,19 @@ package lin.util.ReflectUtils;
 
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 查找和调用方法工具类
+ *
+ * @deprecated 已弃用 请用{@link MethodTool}
  */
 @SuppressWarnings("unused")
+@Deprecated
 public class MethodUtils {
     private static final Map<String, Method> METHOD_CACHE = new HashMap<>();
 

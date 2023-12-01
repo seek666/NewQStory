@@ -39,7 +39,7 @@
         android:textSize="13sp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/common_item_switch"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/item_left_text"
         app:layout_constraintTop_toBottomOf="@id/item_left_text" />
 
     <!--以后可能会换成ImageView 别写太死了-->

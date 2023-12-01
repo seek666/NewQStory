@@ -34,7 +34,7 @@ android {
     }
 
     namespace 'lin.xposed'
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "lin.xposed"
         minSdk 28

@@ -175,6 +175,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (hookItem.getExceptionCollectionToolInstance().hasException()) {
                 itemViewHolder.leftTextView.setTextColor(context.getColor(R.color.蔷薇色));
             }
+
             itemViewHolder.itemSwitch.setChecked(hookItem.isEnabled());
             itemViewHolder.itemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -185,7 +186,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         try {
                             hookItem.loadHook(ClassUtils.getHostLoader());
                         } catch (Exception e) {
-                            ToastTool.show("功能异常\n" + e);
+                            ToastTool.show(e);
                             hookItem.getExceptionCollectionToolInstance().addException(e);
                             itemViewHolder.leftTextView.setTextColor(context.getColor(R.color.蔷薇色));
                         }

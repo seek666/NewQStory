@@ -10,6 +10,7 @@
     tools:context="lin.app.main.MainActivity">
 
     <RelativeLayout
+        android:clickable="true"
         android:id="@+id/main_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

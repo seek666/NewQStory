@@ -13,6 +13,9 @@ public class MethodTool {
 
     }
 
+    /**
+     * @param findClassName 要查找的类名
+     */
     public static MethodTool find(String findClassName) {
         MethodTool methodTool = new MethodTool();
         methodTool.targetMethodInfo = new TargetMethodInfo();
@@ -20,6 +23,20 @@ public class MethodTool {
         return methodTool;
     }
 
+    /**
+     * @param runtimeObjects 运行时对象 使用此方法来构建MethodTool在call时可不入参runtimeObject
+     */
+    public static MethodTool find(Object runtimeObjects) {
+        MethodTool methodTool = new MethodTool();
+        methodTool.targetMethodInfo = new TargetMethodInfo();
+        methodTool.targetMethodInfo.findClass = runtimeObjects.getClass();
+        methodTool.targetMethodInfo.runtimeObject = runtimeObjects;
+        return methodTool;
+    }
+
+    /**
+     * @param findClass 要查找的类
+     */
     public static MethodTool find(Class<?> findClass) {
         MethodTool methodTool = new MethodTool();
         methodTool.targetMethodInfo = new TargetMethodInfo();
@@ -59,14 +76,25 @@ public class MethodTool {
         return this;
     }
 
-    public <T> T call(Object target, Object... params) {
+
+    public <T> T call(Object runtimeObject, Object... params) {
         try {
             Method method = get();
-            return (T) method.invoke(target, params);
+            return (T) method.invoke(runtimeObject, params);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    public <T> T callStatic(Object... params) {
+        try {
+            Method method = get();
+            return (T) method.invoke(null, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public Method get() {
         TargetMethodInfo target = this.targetMethodInfo;
@@ -77,13 +105,10 @@ public class MethodTool {
             return METHOD_CACHE.get(signature);
         }
 
-        for (Class<?> currentFindClass = target.findClass == null ? ClassUtils.getClass(target.findClassName) : target.findClass;
-             currentFindClass != Object.class;
-             currentFindClass = currentFindClass.getSuperclass()) {
+        for (Class<?> currentFindClass = target.findClass == null ? ClassUtils.getClass(target.findClassName) : target.findClass; currentFindClass != Object.class; currentFindClass = currentFindClass.getSuperclass()) {
             MethodFor:
             for (Method method : currentFindClass.getDeclaredMethods()) {
-                if ((method.getName().equals(target.methodName) || target.methodName == null) &&
-                        (method.getReturnType().equals(target.returnType) || target.returnType == null)) {
+                if ((method.getName().equals(target.methodName) || target.methodName == null) && (method.getReturnType().equals(target.returnType) || target.returnType == null)) {
                     Class<?>[] methodParams = method.getParameterTypes();
                     if (methodParams.length == target.methodParams.length) {
                         for (int i = 0; i < methodParams.length; i++) {
@@ -103,6 +128,7 @@ public class MethodTool {
     }
 
     private static class TargetMethodInfo {
+        public Object runtimeObject;
         public Class<?> findClass;
         public String findClassName;
         public String methodName;

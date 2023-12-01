@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             String versionAndBuildTimeInfo = String.format("Current version : %s%nBuild time : %s", BuildConfig.VERSION_NAME, buildTime);
             itemInfoList.add(new MainItemListView.ItemInfo(versionAndBuildTimeInfo, null));
 
-
         } catch (Exception e) {
 
         }
