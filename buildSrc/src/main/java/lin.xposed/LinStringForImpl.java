@@ -3,6 +3,9 @@ package lin.xposed;
 import com.github.megatronking.stringfog.IStringFog;
 import com.github.megatronking.stringfog.annotation.StringFogIgnore;
 
+/**
+ * 对apk进行字符串加密用的
+ */
 @StringFogIgnore
 public class LinStringForImpl implements IStringFog {
 

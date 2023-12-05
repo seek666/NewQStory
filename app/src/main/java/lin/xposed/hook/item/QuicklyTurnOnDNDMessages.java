@@ -22,7 +22,7 @@ import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.ScreenParamUtils;
 import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 @HookItem("辅助功能/消息通知/快捷免打扰")
 public class QuicklyTurnOnDNDMessages extends BaseSwitchFunctionHookItem {
@@ -84,7 +84,7 @@ public class QuicklyTurnOnDNDMessages extends BaseSwitchFunctionHookItem {
         //不hook onCreate方法了 那样需要重启才能生效 hook onResume可在界面重新渲染到屏幕时会调用生效
         Method onCreateMethod = MethodTool.find("com.tencent.mobileqq.activity.home.Conversation").name("onResume").params(boolean.class).get();
         hookAfter(onCreateMethod, param -> {
-            //这个是QQ原本的主页右上角 + 图标
+            //这个是QQ原本的主页右上角 + 图标 尽量不要动这个的长按事件 因为qa已经用了
             ImageView imageView = FieIdUtils.getFirstField(param.thisObject, ImageView.class);
             RelativeLayout titleView = (RelativeLayout) imageView.getParent().getParent();
             Activity activity = (Activity) imageView.getContext();

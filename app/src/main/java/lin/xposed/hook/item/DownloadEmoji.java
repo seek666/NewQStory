@@ -28,7 +28,7 @@ import lin.xposed.hook.load.methodfind.IMethodFinder;
 import lin.xposed.hook.load.methodfind.MethodFinder;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.PathTool;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 @HookItem("辅助功能/表情/在新的QQ中依然可以下载表情")
 public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethodFinder {

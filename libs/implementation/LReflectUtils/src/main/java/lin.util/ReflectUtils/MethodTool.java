@@ -23,16 +23,6 @@ public class MethodTool {
         return methodTool;
     }
 
-    /**
-     * @param runtimeObjects 运行时对象 使用此方法来构建MethodTool在call时可不入参runtimeObject
-     */
-    public static MethodTool find(Object runtimeObjects) {
-        MethodTool methodTool = new MethodTool();
-        methodTool.targetMethodInfo = new TargetMethodInfo();
-        methodTool.targetMethodInfo.findClass = runtimeObjects.getClass();
-        methodTool.targetMethodInfo.runtimeObject = runtimeObjects;
-        return methodTool;
-    }
 
     /**
      * @param findClass 要查找的类
@@ -128,7 +118,6 @@ public class MethodTool {
     }
 
     private static class TargetMethodInfo {
-        public Object runtimeObject;
         public Class<?> findClass;
         public String findClassName;
         public String methodName;

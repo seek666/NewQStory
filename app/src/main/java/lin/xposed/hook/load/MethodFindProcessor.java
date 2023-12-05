@@ -46,14 +46,9 @@ public class MethodFindProcessor {
                 super.handleMessage(msg);
                 String op = (String) msg.obj;
                 switch (op) {
-                    case "END":
-                        loadingDialog.dismiss();
-                        break;
-                    case "START":
-                        loadingDialog.show();
-                        break;
-                    default:
-                        loadingDialog.setTitle(op);
+                    case "END" -> loadingDialog.dismiss();
+                    case "START" -> loadingDialog.show();
+                    default -> loadingDialog.setTitle(op);
                 }
             }
         };
@@ -70,18 +65,7 @@ public class MethodFindProcessor {
                 //先初始化
                 DexFinder dexFinder = new DexFinder.Builder(ClassUtils.getHostLoader(), HookEnv.getHostApkPath())
                         .setCachePath(PathTool.getModuleDataPath() + "/MethodFinderCache")//设置运行缓存路径 将使用本地内存代表堆内存 这样可以在解析大且多的dex时造成堆溢出
-                        .setOnProgress(new DexFinder.OnProgress() {
-                            //重写此方法以监听dex解析数量情况 可以用作通知View解析进度
-                            @Override
-                            public void init(int dexSize) {
-                                new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setMax(dexSize));
-                            }
-
-                            @Override
-                            public void parse(int progress, String dexName) {
-                                new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setProgress(progress));
-                            }
-                        }).build();//调用build方法后会开始解析 目测300mp的qq解析时间在20s以内
+                        .setOnProgress(new MyOnProgress(loadingDialog)).build();//调用build方法后会开始解析 目测300mp的qq解析时间在20s以内
                 sendMsgToDialog("初始化完成 开始查找方法...");
                 AtomicInteger progress = new AtomicInteger();
                 new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setMax(HookItemLoader.HookInstance.size() - 1 ));
@@ -145,6 +129,25 @@ public class MethodFindProcessor {
                     hookItem.getExceptionCollectionToolInstance().addException(e);
                 }
             }
+        }
+    }
+
+    private static class MyOnProgress implements DexFinder.OnProgress {
+        private SimpleLoadingDialog loadingDialog;
+
+        public MyOnProgress(SimpleLoadingDialog loadingDialog) {
+            this.loadingDialog = loadingDialog;
+        }
+
+        //重写此方法以监听dex解析数量情况 可以用作通知View解析进度
+        @Override
+        public void init(int dexSize) {
+            new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setMax(dexSize));
+        }
+
+        @Override
+        public void parse(int progress, String dexName) {
+            new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setProgress(progress));
         }
     }
 }

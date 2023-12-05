@@ -11,7 +11,7 @@ import java.util.Map;
 
 import lin.xposed.common.utils.FileUtils;
 import lin.xposed.hook.util.PathTool;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 public class ListConfig<T> {
     private static String getPath() {

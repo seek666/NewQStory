@@ -15,7 +15,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.xposed.R;
-import top.linl.activity.proxy.ActivityProxyManager;
+import top.linl.activity.ActivityProxyManager;
 import top.linl.dexparser.util.Utils;
 
 public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit {

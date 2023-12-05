@@ -21,7 +21,7 @@ import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.PathTool;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 import top.linl.annotationprocessor.AnnotationClassNameTools;
 
 //扫描hook项目并加载

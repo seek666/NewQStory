@@ -1,4 +1,4 @@
-package top.linl.activity.proxy;
+package top.linl.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Instrumentation;
@@ -14,7 +14,7 @@ import java.lang.reflect.Proxy;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dalvik.system.DexClassLoader;
-import top.linl.activity.BaseActivity;
+import top.linl.activity.proxy.ActivityProxyEnvInfo;
 import top.linl.activity.proxy.replace.IActivityManagerHandler;
 import top.linl.activity.proxy.replace.ProxyHandler;
 import top.linl.activity.proxy.replace.ProxyInstrumentation;

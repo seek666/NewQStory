@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         initItem();
         itemInfoArrayAdapter.notifyDataSetChanged();
-        RequestPermissions();
+//        RequestPermissions();
     }
 
     private void initItem() {

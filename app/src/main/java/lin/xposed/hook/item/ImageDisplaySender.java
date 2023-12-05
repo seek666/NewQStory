@@ -30,7 +30,7 @@ import lin.xposed.hook.QQVersion;
 import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.util.LogUtils;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 @HookItem("辅助功能/聊天/聊天界面图片显示发送者")
 public class ImageDisplaySender extends BaseSwitchFunctionHookItem {

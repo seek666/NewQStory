@@ -21,7 +21,7 @@ stringfog {
     // 也可以指定一个固定的密钥：HardCodeKeyGenerator("This is a key")
     kg new HardCodeKeyGenerator("LIN")
     // 可选（4.0版本新增）：用于控制字符串加密后在字节码中的存在形式, 默认为base64，
-    // 也可以使用text或者bytes
+    // 也可以使用bytes
     mode StringFogMode.bytes
 }
 
@@ -40,7 +40,7 @@ android {
         minSdk 28
         //noinspection ExpiredTargetSdkVersion
         targetSdk 29
-        versionCode 64
+        versionCode 65
         versionName parseVersionCode(versionCode)
     }
 
@@ -112,14 +112,13 @@ dependencies {
     //防止kt版本不匹配编译异常 (虽然没用到kt语言)
     implementation(platform('org.jetbrains.kotlin:kotlin-bom:1.8.20-RC'))
 
-//    implementation(files('libs/ReflectUtils.jar'))
-    //导入libs的jar
-    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/bsh-2.1.1.jar')
+    compileOnly files('libs/XposedBridgeApi-82.jar')
 
     def libs = new File(rootDir.getPath() + "/libs/implementation")
     for (File module : libs.listFiles()) {
 //        if (module.getName().startsWith("ReflectUtils")) continue;
-        implementation(project(':'+module.getName()))
+        implementation(project(':' + module.getName()))
     }
     annotationProcessor project(':AnnotationProcessor') //引入注解处理器
 

@@ -31,7 +31,7 @@ import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.load.HookItemLoader;
 import lin.xposed.hook.load.MethodFindProcessor;
 import lin.xposed.hook.util.PathTool;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 
 public class HookInit {

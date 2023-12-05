@@ -16,7 +16,7 @@ import lin.xposed.common.utils.ScreenParamUtils;
 import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
-@HookItem("辅助功能/群聊/群设置页群文件重排序")
+@HookItem("辅助功能/群聊/群设置页群文件旧版排序")
 public class SortTroopSetting extends BaseSwitchFunctionHookItem {
 
     @Override

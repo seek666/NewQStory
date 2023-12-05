@@ -33,7 +33,7 @@ import lin.xposed.hook.main.itemview.info.DirectoryUiInfo;
 import lin.xposed.hook.main.itemview.info.ItemUiInfo;
 import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
 import lin.xposed.hook.util.LogUtils;
-import lin.xposed.hook.util.qq.ToastTool;
+import lin.xposed.hook.util.ToastTool;
 
 /*
  * 初始化流程

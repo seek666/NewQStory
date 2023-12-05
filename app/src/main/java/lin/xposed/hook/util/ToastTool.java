@@ -1,4 +1,4 @@
-package lin.xposed.hook.util.qq;
+package lin.xposed.hook.util;
 
 import android.content.Context;
 import android.os.Handler;

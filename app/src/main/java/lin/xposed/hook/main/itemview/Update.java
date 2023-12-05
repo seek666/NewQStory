@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import lin.app.main.ModuleBuildInfo;
+import lin.widget.dialog.base.MDialog;
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.HttpUtils;
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
-import lin.xposed.hook.util.qq.ToastTool;
-import lin.app.main.ModuleBuildInfo;
-import lin.widget.dialog.base.MDialog;
+import lin.xposed.hook.util.ToastTool;
 
 public class Update extends OtherViewItemInfo {
     private static JSONObject updateInfo;

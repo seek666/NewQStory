@@ -14,8 +14,7 @@ import top.linl.activity.util.ActivityUtils;
 import top.linl.activity.util.ClassLoaderTool;
 
 /**
- * 使用前参阅 {@link top.linl.activity.proxy.ActivityProxyManager#initActivityProxyManager(Context, String, int)}
- *
+ * 使用前参阅 {@link ActivityProxyManager#initActivityProxyManager(Context, String, int)}
  */
 public class BaseActivity extends FragmentActivity {
     private final BaseActivityClassLoader mLoader = new BaseActivityClassLoader(BaseActivity.class.getClassLoader());

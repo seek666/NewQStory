@@ -29,7 +29,8 @@ public class MiniProgramsSkipAds extends BaseSwitchFunctionHookItem implements I
     public void loadHook(ClassLoader classLoader) throws Exception {
         Class<?> GdtMvViewController = ClassUtils.getClass(HookEnv.getVersionCode() < QQVersion.QQ_8_9_78 ? "com.tencent.gdtad.basics.motivevideo.GdtMvViewController" : "com.tencent.gdtad.basics.motivevideo.GdtMvVideoViewController");
         Method method = MethodTool.find("com.tencent.gdtad.basics.motivevideo.a.b")
-                .params(View.class, ClassUtils.getClass("com.tencent.gdtad.basics.motivevideo.a.b$a"), ClassUtils.getClass("com.tencent.gdtad.basics.motivevideo.data.GdtMotiveVideoModel"))
+                .params(View.class, ClassUtils.getClass("com.tencent.gdtad.basics.motivevideo.a.b$a"),
+                        ClassUtils.getClass("com.tencent.gdtad.basics.motivevideo.data.GdtMotiveVideoModel"))
                 .returnType(void.class)
                 .get();
         hookAfter(method,param -> {
@@ -56,7 +57,6 @@ public class MiniProgramsSkipAds extends BaseSwitchFunctionHookItem implements I
             });
 
         }
-        //"GdtMvVideoViewController", 1, "[onBackEvent] mHasWatchAds "
         //代码搜索"GdtMvViewController", 1, "[onBackEvent] mHasWatchAds "
         if (GdtMvViewController != null) {
             Method MethodIfExists;

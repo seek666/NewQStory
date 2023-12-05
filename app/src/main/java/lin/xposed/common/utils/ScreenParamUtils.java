@@ -100,7 +100,7 @@ public class ScreenParamUtils {
     /**
      * sp转px
      */
-    public static int sp2px(Context context, float spValue) {
+    public static int spToPx(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
@@ -108,7 +108,7 @@ public class ScreenParamUtils {
     /**
      * px转sp
      */
-    public static int px2sp(Context context, float pxValue) {
+    public static int pxToSp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }

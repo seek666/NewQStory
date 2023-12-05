@@ -19,6 +19,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
+import lin.xposed.hook.util.qq.QQEnvTool;
 
 @HookItem("辅助功能/实验功能/获取游戏好友QQ")
 public class GetGameFriends extends BaseSwitchFunctionHookItem {
@@ -28,25 +29,6 @@ public class GetGameFriends extends BaseSwitchFunctionHookItem {
         return "主页搜索-游戏消息-聊天界面右上角";
     }
 
-    public static boolean checkQQ(String qq) {
-        if (qq == null) return false;
-        //先验证是否为5—12位数字
-        if (qq.length() < 5 || qq.length() > 12) {
-            return false;
-        }
-        //首位不能是0
-        if (qq.charAt(0) == '0') {
-            return false;
-        }
-        //验证每一位数字都在1-9内
-        for (int x = 0; x < qq.length(); x++) {
-            char ch = qq.charAt(x);
-            if (ch < '0' || ch > '9') {
-                return false;
-            }
-        }
-        return true;
-    }
     @Override
     public void loadHook(ClassLoader loader) throws Exception {
         Method method = MethodUtils.findMethod("com.tencent.mobileqq.activity.ChatSettingActivity", "doOnCreate", boolean.class, new Class[]{Bundle.class});
@@ -69,7 +51,7 @@ public class GetGameFriends extends BaseSwitchFunctionHookItem {
                     //分析出QQ
                     if (field.getType() == String.class) {
                         String uin = (String) field.get(param.thisObject);
-                        if (checkQQ(uin)) {
+                        if (QQEnvTool.checkQQ(uin)) {
                             qq = uin;
                         }
                     }

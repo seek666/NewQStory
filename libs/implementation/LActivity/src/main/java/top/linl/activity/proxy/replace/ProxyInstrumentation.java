@@ -17,7 +17,7 @@ import android.os.TestLooperManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-import top.linl.activity.proxy.ActivityProxyManager;
+import top.linl.activity.ActivityProxyManager;
 import top.linl.activity.util.ActivityUtils;
 import top.linl.activity.util.ClassLoaderTool;
 
