@@ -1,4 +1,4 @@
-package lin.xposed.hook.main.itemview.base;
+package lin.xposed.hook.view.main.itemview.base;
 
 import android.content.Context;
 import android.view.View;
@@ -6,12 +6,12 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import lin.xposed.hook.main.itemview.AddTelegramChannel;
-import lin.xposed.hook.main.itemview.AddTelegramGroup;
-import lin.xposed.hook.main.itemview.EndAllActivity;
-import lin.xposed.hook.main.itemview.GithubSourceCode;
-import lin.xposed.hook.main.itemview.StartFindMethod;
-import lin.xposed.hook.main.itemview.Update;
+import lin.xposed.hook.view.main.itemview.AddTelegramChannel;
+import lin.xposed.hook.view.main.itemview.AddTelegramGroup;
+import lin.xposed.hook.view.main.itemview.EndAllActivity;
+import lin.xposed.hook.view.main.itemview.GithubSourceCode;
+import lin.xposed.hook.view.main.itemview.StartFindMethod;
+import lin.xposed.hook.view.main.itemview.Update;
 
 
 /**

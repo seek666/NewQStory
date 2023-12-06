@@ -10,6 +10,7 @@ import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("净化/聊天/标题栏/去除标题栏听筒标识")
 public class HideChatTitleHandsetIcon extends BaseSwitchFunctionHookItem {
+
     @Override
     public String getTips() {
         return "当前功能未在QQNT修复 可用状态 : " + (QQVersion.isQQNT() ? "不可用" : "可用");

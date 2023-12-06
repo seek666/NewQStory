@@ -1,4 +1,4 @@
-package lin.xposed;
+package lin.app.main;
 
 import com.github.megatronking.stringfog.IStringFog;
 import com.github.megatronking.stringfog.annotation.StringFogIgnore;

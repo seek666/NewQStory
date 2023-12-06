@@ -1,4 +1,4 @@
-package lin.xposed.hook.main;
+package lin.xposed.hook.view.main;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,15 +25,15 @@ import lin.xposed.common.utils.ScreenParamUtils;
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.load.HookItemLoader;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.main.itemListView.ItemFragment;
-import lin.xposed.hook.main.itemListView.SettingViewFragment;
-import lin.xposed.hook.main.itemview.base.DefaultItemView;
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
-import lin.xposed.hook.main.itemview.info.DirectoryUiInfo;
-import lin.xposed.hook.main.itemview.info.ItemUiInfo;
-import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.ToastTool;
+import lin.xposed.hook.view.main.fragment.ItemFragment;
+import lin.xposed.hook.view.main.fragment.SettingViewFragment;
+import lin.xposed.hook.view.main.itemview.base.DefaultItemView;
+import lin.xposed.hook.view.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.view.main.itemview.info.DirectoryUiInfo;
+import lin.xposed.hook.view.main.itemview.info.ItemUiInfo;
+import lin.xposed.hook.view.main.itemview.info.ItemUiInfoGroupWrapper;
 
 /*
  * 初始化流程
@@ -118,6 +118,17 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             backgroundRadius[0] = radius;
             backgroundRadius[1] = radius;
         }
+        if (itemInfo instanceof ItemUiInfo itemUiInfo && position != 0) {
+            if (MainAdapter.getDataList().get(position - 1) instanceof ItemUiInfo uiInfo) {
+                String groupPath = itemUiInfo.getGroupPath();
+                String previousGroupString = uiInfo.getGroupPath();
+                if (previousGroupString != null && !previousGroupString.equals(groupPath)) {
+                    backgroundRadius[0] = radius;
+                    backgroundRadius[1] = radius;
+                }
+            }
+        }
+
         if (position == 0) //判断是不是第一个
         {
             backgroundRadius[0] = radius;

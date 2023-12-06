@@ -1,10 +1,9 @@
-package lin.xposed.hook.main.itemview;
+package lin.xposed.hook.view.main.itemview;
 
 import android.content.Context;
 import android.view.View;
 
-import lin.xposed.common.utils.ActivityTools;
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.view.main.itemview.base.OtherViewItemInfo;
 import top.linl.activity.util.ActivityUtils;
 
 public class EndAllActivity extends OtherViewItemInfo {

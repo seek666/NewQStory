@@ -31,8 +31,8 @@ import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.hook.annotation.HookItem;
 import lin.xposed.hook.load.base.BaseHookItem;
-import lin.xposed.hook.main.MainSettingActivity;
 import lin.xposed.hook.util.LogUtils;
+import lin.xposed.hook.view.main.MainSettingActivity;
 
 @HookItem(value = "注入QQ设置页面", hasPath = false)
 public class QQSettingInject extends BaseHookItem {

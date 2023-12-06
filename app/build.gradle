@@ -10,7 +10,7 @@ import com.github.megatronking.stringfog.plugin.kg.HardCodeKeyGenerator
 
 stringfog {
     // 必要：加解密库的实现类路径，需和上面配置的加解密算法库一致。
-    implementation 'lin.xposed.LinStringForImpl'
+    implementation 'lin.app.main.LinStringForImpl'
     // 可选：StringFog会自动尝试获取packageName，如果遇到获取失败的情况，可以显式地指定。
     packageName 'lin.xposed'
     // 可选：加密开关，默认开启。

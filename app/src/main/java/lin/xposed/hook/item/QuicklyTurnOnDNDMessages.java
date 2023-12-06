@@ -41,8 +41,12 @@ public class QuicklyTurnOnDNDMessages extends BaseSwitchFunctionHookItem {
             timeConfig.removeAll();
             timeConfig.put("TaskName", "关闭");
         }
-
-        simpleRadioDialog.setTitle("设置需要屏蔽通知的时长");
+        long timeRemaining = targetTime - currentTime.getTime();//结束时间 减去当前时间是剩余时间
+        if (timeRemaining > 0) {//剩余时间大于0是还没结束
+            simpleRadioDialog.setTitle("剩余 " + formatDate(new Date(timeRemaining), "hh:mm"));
+        } else {
+            simpleRadioDialog.setTitle("设置需要屏蔽通知的时长");
+        }
         simpleRadioDialog.setSelected(timeConfig.get("TaskName"));
         simpleRadioDialog.setOnClick(text -> {
             //add task

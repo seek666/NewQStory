@@ -25,7 +25,7 @@
 -keep class * extends android.app.Activity {*;}
 #-keep @lin.xposed.hook.annotation.HookItem class * {*;}
 -keep class lin.xposed.R {*;}
--keep class lin.xposed.LinStringForImpl {*;}
+-keep class lin.app.main.LinStringForImpl {*;}
 
 -keepclassmembers enum * {
     public static **[] values();

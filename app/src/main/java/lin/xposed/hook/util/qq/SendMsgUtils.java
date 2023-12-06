@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.ConstructorUtils;
@@ -28,6 +30,7 @@ public class SendMsgUtils {
             ToastTool.show("elementList==null");
             return;
         }
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
         Class<?> IMsgServiceClass = ClassUtils.getClass("com.tencent.qqnt.msg.api.IMsgService");
         Object msgServer = QQEnvTool.getQRouteApi(IMsgServiceClass);
         MethodTool.find(msgServer.getClass())

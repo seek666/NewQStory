@@ -1,4 +1,4 @@
-package lin.xposed.hook.main.itemview;
+package lin.xposed.hook.view.main.itemview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,8 +19,8 @@ import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.HttpUtils;
 import lin.xposed.common.utils.ViewUtils;
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.util.ToastTool;
+import lin.xposed.hook.view.main.itemview.base.OtherViewItemInfo;
 
 public class Update extends OtherViewItemInfo {
     private static JSONObject updateInfo;

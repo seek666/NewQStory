@@ -26,8 +26,8 @@ import java.util.List;
 import lin.xposed.BuildConfig;
 import lin.xposed.R;
 import lin.xposed.databinding.ActivityMainBinding;
-import lin.xposed.hook.main.itemview.AddTelegramChannel;
-import lin.xposed.hook.main.itemview.GithubSourceCode;
+import lin.xposed.hook.view.main.itemview.AddTelegramChannel;
+import lin.xposed.hook.view.main.itemview.GithubSourceCode;
 import top.linl.annotationprocessor.AnnotationClassNameTools;
 
 

@@ -1,4 +1,4 @@
-package lin.xposed.hook.main.itemListView;
+package lin.xposed.hook.view.main.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lin.xposed.R;
-import lin.xposed.hook.main.LinearSpacingItemDecoration;
-import lin.xposed.hook.main.MainAdapter;
-import lin.xposed.hook.main.MainSettingActivity;
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.util.LogUtils;
-import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
-import lin.xposed.hook.main.itemview.info.ItemUiInfoManager;
+import lin.xposed.hook.view.main.LinearSpacingItemDecoration;
+import lin.xposed.hook.view.main.MainAdapter;
+import lin.xposed.hook.view.main.MainSettingActivity;
+import lin.xposed.hook.view.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.view.main.itemview.info.ItemUiInfoGroupWrapper;
+import lin.xposed.hook.view.main.itemview.info.ItemUiInfoManager;
 
 
 public class SettingViewFragment extends Fragment {

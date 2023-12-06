@@ -1,4 +1,4 @@
-package lin.xposed.hook.main.itemview.base;
+package lin.xposed.hook.view.main.itemview.base;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import lin.xposed.R;
-import lin.xposed.hook.main.itemview.Update;
+import lin.xposed.hook.view.main.itemview.Update;
 
 
 /**

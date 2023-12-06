@@ -1,20 +1,21 @@
-package lin.xposed.hook.main.itemview;
+package lin.xposed.hook.view.main.itemview;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.view.main.itemview.base.OtherViewItemInfo;
 
-public class AddTelegramChannel extends OtherViewItemInfo {
-    public AddTelegramChannel(Context context) {
+public class AddTelegramGroup extends OtherViewItemInfo {
+
+    public AddTelegramGroup(Context context) {
         super(context);
     }
 
     @Override
     public String getLeftText() {
-        return "TG频道";
+        return "TG群组";
     }
 
     @Override
@@ -24,7 +25,7 @@ public class AddTelegramChannel extends OtherViewItemInfo {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                Uri content = Uri.parse("https://t.me/WhenFlowersAreInBloom");
+                Uri content = Uri.parse("https://t.me/AnQChat");
                 intent.setData(content);
                 v.getContext().startActivity(intent);
             }
