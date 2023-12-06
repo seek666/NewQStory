@@ -11,7 +11,6 @@ import java.util.Map;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.load.MethodFindProcessor;
 import top.linl.dexparser.DexFinder;
 
 public class MethodFinder {
@@ -25,20 +24,18 @@ public class MethodFinder {
     }
 
     public Method[] findMethodString(String str) throws Exception {
-        if (MethodFindProcessor.isMethodFindPeriod.get()) {
-            Method[] methods = dexFinder.findMethodString(str).toArray(new Method[0]);
-//            container.put(str, methods);
-            return methods;
-        }
-        return null;
+        Method[] methods = dexFinder.findMethodString(str).toArray(new Method[0]);
+        return methods;
     }
 
     public Method getMethod(String methodId) {
         return container.get(methodId);
     }
+
     public void putMethod(String methodId, Method method) {
         container.put(methodId, method);
     }
+
     private JSONObject getFindResults() {
         JSONObject result = new JSONObject();
         for (Map.Entry<String, Method> entry : container.entrySet()) {

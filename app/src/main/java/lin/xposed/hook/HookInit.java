@@ -18,7 +18,6 @@ import androidx.core.app.ActivityCompat;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -40,7 +39,6 @@ public class HookInit {
     private static final String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE",//外部读
             "android.permission.WRITE_EXTERNAL_STORAGE"//外部写
     };
-    private static final AtomicBoolean isStartLoad = new AtomicBoolean(false);
 
     public static void initMainHook() throws Exception {
 
@@ -56,17 +54,15 @@ public class HookInit {
         //方法数据已过期 开始查找方法
         else if (!HookItemLoader.methodDataIsOutOfDate()) {
             //需要有activity才能展示查找方法的动画 所以等activity创建再开始查找
-            XposedHelpers.findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    if (isStartLoad.getAndSet(true)) return;
                     Activity activity = (Activity) param.thisObject;
                     ActivityTools.injectResourcesToContext(activity);
                     MethodFindProcessor.startFindAllMethod(activity);
                 }
             });
         } else {
-            if (isStartLoad.getAndSet(true)) return;
             //正常没有过期 扫描本地方法和加载Hook
             MethodFindProcessor.scanMethod();
             HookItemLoader.initHookItem();

@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.ConstructorUtils;
@@ -14,6 +14,7 @@ import lin.xposed.hook.util.ToastTool;
 
 public class SendMsgUtils {
 
+    private static final ExecutorService service = Executors.newSingleThreadExecutor();
 
     /**
      * 发送一条消息
@@ -30,20 +31,17 @@ public class SendMsgUtils {
             ToastTool.show("elementList==null");
             return;
         }
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
         Class<?> IMsgServiceClass = ClassUtils.getClass("com.tencent.qqnt.msg.api.IMsgService");
         Object msgServer = QQEnvTool.getQRouteApi(IMsgServiceClass);
-        MethodTool.find(msgServer.getClass())
-                .params(ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.Contact"), ArrayList.class, ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.IOperateCallback"))
-                .returnType(void.class)
-                .name("sendMsg")
-                .call(msgServer, contact, elementList, Proxy.newProxyInstance(ClassUtils.getHostLoader(), new Class[]{ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.IOperateCallback")}, new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        // void onResult(int i2, String str);
-                        return null;
-                    }
-                }));
+        MethodTool.find(msgServer.getClass()).params(ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.Contact"), ArrayList.class, ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.IOperateCallback")).returnType(void.class).name("sendMsg").call(msgServer, contact, elementList, Proxy.newProxyInstance(ClassUtils.getHostLoader(), new Class[]{ClassUtils.getClass("com.tencent.qqnt.kernel.nativeinterface.IOperateCallback")}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                // void onResult(int i2, String str);
+                return null;
+            }
+        }));
+
+
 
         /*int random = (int) Math.random();
         Object c = XposedHelpers.callStaticMethod(ClassUtils.getClass("com.tencent.qqnt.msg.g"), "c");

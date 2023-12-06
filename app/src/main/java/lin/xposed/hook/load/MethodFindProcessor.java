@@ -22,7 +22,6 @@ import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.FileUtils;
 import lin.xposed.hook.HookEnv;
 import lin.xposed.hook.load.base.BaseHookItem;
-import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.load.methodfind.IMethodFinder;
 import lin.xposed.hook.load.methodfind.MethodFinder;
 import lin.xposed.hook.util.LogUtils;
@@ -37,7 +36,7 @@ public class MethodFindProcessor {
     private static Handler mHandler;
 
     public static void startFindAllMethod(Activity activity) {
-        if (isMethodFindPeriod.getAndSet(true)) return;
+        if (isMethodFindPeriod.getAndSet(true)) return;//防止意外的多次进入方法查找期
         SimpleLoadingDialog loadingDialog = new SimpleLoadingDialog(activity);
         loadingDialog.setCanceledOnTouchOutside(false);
         mHandler = new Handler(Looper.getMainLooper()) {
@@ -117,7 +116,6 @@ public class MethodFindProcessor {
         Method loadMethod = MethodFinder.class.getDeclaredMethod("loadAllMethod", JSONObject.class);
         loadMethod.setAccessible(true);
         for (BaseHookItem hookItem : HookItemLoader.HookInstance.values()) {
-            if (!BaseSwitchFunctionHookItem.class.isAssignableFrom(hookItem.getClass())) continue;
             if (hookItem instanceof IMethodFinder iMethodFinder) {
                 try {
                     //再运行一次方法查找器并进入方法得到期来让项可以得到方法

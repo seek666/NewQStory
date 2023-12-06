@@ -29,42 +29,6 @@ public class QuicklyTurnOnDNDMessages extends BaseSwitchFunctionHookItem {
 
     private static SimpleConfig timeConfig;
 
-    public static void showDialog(Activity activity) {
-        timeConfig = new SimpleConfig(QuicklyTurnOnDNDMessages.class.getName());
-        SimpleRadioDialog simpleRadioDialog = new SimpleRadioDialog(activity, new String[]{"8小时", "2小时", "关闭"});
-        //发送通知先先查询是否在勿扰时间内
-        Long targetTime = timeConfig.get("targetTime");
-
-        Date currentTime = new Date();
-        //不在范围时间内
-        if (targetTime == null || currentTime.getTime() > targetTime) {
-            timeConfig.removeAll();
-            timeConfig.put("TaskName", "关闭");
-        }
-        long timeRemaining = targetTime - currentTime.getTime();//结束时间 减去当前时间是剩余时间
-        if (timeRemaining > 0) {//剩余时间大于0是还没结束
-            simpleRadioDialog.setTitle("剩余 " + formatDate(new Date(timeRemaining), "hh:mm"));
-        } else {
-            simpleRadioDialog.setTitle("设置需要屏蔽通知的时长");
-        }
-        simpleRadioDialog.setSelected(timeConfig.get("TaskName"));
-        simpleRadioDialog.setOnClick(text -> {
-            //add task
-            if (text.equals("关闭")) {
-                timeConfig.removeAll();
-                ToastTool.show("关闭了免打扰");
-            } else {
-                Calendar calendar = Calendar.getInstance();//默认是当前日期
-                calendar.add(Calendar.HOUR, Integer.parseInt(text.substring(0, text.indexOf("小时"))));//添加目标日期
-                timeConfig.put("targetTime", calendar.getTime().getTime());
-                ToastTool.show("将在 " + formatDate(new Date((Long) timeConfig.get("targetTime")), "MM-dd hh:mm") + " 结束");
-            }
-            timeConfig.put("TaskName", text);
-            timeConfig.submit();//提交配置
-        });
-        simpleRadioDialog.show();
-    }
-
     /**
      * 日期格式化为字符串
      */
@@ -75,6 +39,48 @@ public class QuicklyTurnOnDNDMessages extends BaseSwitchFunctionHookItem {
         } catch (Exception e) {
             return "日期格式化失败 " + format;
         }
+    }
+
+    public void showDialog(Activity activity) {
+        timeConfig = new SimpleConfig(QuicklyTurnOnDNDMessages.class.getName());
+        SimpleRadioDialog simpleRadioDialog = new SimpleRadioDialog(activity, new String[]{"8小时", "2小时", "关闭"});
+        Long targetTime = timeConfig.get("targetTime");
+
+        Date currentTime = new Date();
+        //不在范围时间内 清理任务信息
+        if (targetTime == null || currentTime.getTime() > targetTime) {
+            timeConfig.removeAll();
+            timeConfig.put("TaskName", "关闭");
+            simpleRadioDialog.setTitle("需要屏蔽通知的时长");
+        } else {
+            long timeRemaining = targetTime - currentTime.getTime();//结束时间 减去当前时间是剩余时间
+            long hour = timeRemaining / (60 * 60 * 1000);
+            long minute = (timeRemaining - hour * 60 * 60 * 1000) / (60 * 1000);
+            simpleRadioDialog.setTitle("剩余 " + hour + "时" + minute + "分");
+        }
+
+        simpleRadioDialog.setSelected(timeConfig.get("TaskName"));
+        simpleRadioDialog.setOnClick(text -> {
+            //add task
+            if (text.equals("关闭")) {
+                timeConfig.removeAll();
+                simpleRadioDialog.setTitle("需要屏蔽通知的时长");
+                ToastTool.show("关闭了免打扰");
+            } else {
+                Calendar calendar = Calendar.getInstance();//默认是当前日期
+                calendar.add(Calendar.HOUR, Integer.parseInt(text.substring(0, text.indexOf("小时"))));//添加目标日期
+                timeConfig.put("targetTime", calendar.getTimeInMillis());
+
+                long timeRemaining = calendar.getTimeInMillis() - System.currentTimeMillis();//结束时间 减去当前时间是剩余时间
+                long hour = timeRemaining / (60 * 60 * 1000);
+                simpleRadioDialog.setTitle("剩余 " + hour + "时");
+
+                ToastTool.show("将在 " + formatDate(new Date((Long) timeConfig.get("targetTime")), "MM-dd hh:mm") + " 结束");
+            }
+            timeConfig.put("TaskName", text);
+            timeConfig.submit();//提交配置
+        });
+        simpleRadioDialog.show();
     }
 
     @Override
